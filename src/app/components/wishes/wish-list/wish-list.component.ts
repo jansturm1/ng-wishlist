@@ -17,4 +17,8 @@ export class WishListComponent implements OnInit {
       this.wishes = wishes;
     });
   }
+
+  deleteWish(id: string) {
+    this.wishService.deleteWishForUser('123', id);
+  }
 }
