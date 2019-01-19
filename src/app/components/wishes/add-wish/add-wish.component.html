@@ -1,0 +1,20 @@
+<section>
+  <mat-card>
+    <form
+      (ngSubmit)="onSubmit(wishForm)"
+      [formGroup]="wishForm"
+      fxLayout="column"
+      fxLayoutAlign="center center"
+      class="add-wish-form"
+    >
+      <mat-form-field appearance="standard">
+        <mat-label>Add a new wish</mat-label>
+        <input formControlName="name" matInput placeholder="ex. shoes ..." />
+        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+        <mat-hint *ngIf="wishForm.get('name').hasError('required')">Name is required</mat-hint>
+        <mat-error *ngIf="wishForm.get('name').hasError('required')"> Please enter a valid name </mat-error>
+      </mat-form-field>
+      <button type="submit" [disabled]="wishForm.invalid" mat-raised-button color="primary">Add</button>
+    </form>
+  </mat-card>
+</section>
