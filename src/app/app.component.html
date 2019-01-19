@@ -20,12 +20,14 @@
       <div fxHide.gt-xs>
         <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
       </div>
-      <span><a [routerLink]="['/']">Wishlist</a></span> <span><a [routerLink]="['wishes']">List</a></span>
+      <span><a [routerLink]="['/']">Wishlist</a></span
+      ><span class="toolbar-spacer" style="width:2%"></span> <span><a [routerLink]="['wishes']">List</a></span>
       <div fxFlex fxLayoutAlign="flex-end" fxLayoutGap="20px" fxHide.lt-sm>
         <span><a [routerLink]="['login']">Login</a></span> <span><a [routerLink]="['register']">Register</a></span>
         <span><a>Logout</a></span> <span class="toolbar-spacer"></span>
       </div>
     </mat-toolbar>
     <router-outlet></router-outlet>
+    <app-footer></app-footer>
   </mat-sidenav-content>
 </mat-sidenav-container>

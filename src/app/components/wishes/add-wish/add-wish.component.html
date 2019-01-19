@@ -1,5 +1,5 @@
-<section>
-  <mat-card>
+<section fxLayout="row" fxLayoutAlign="center start" style="margin-top: 2%">
+  <mat-card style="width: 50%">
     <form
       (ngSubmit)="onSubmit(wishForm)"
       [formGroup]="wishForm"
@@ -13,6 +13,30 @@
         <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
         <mat-hint *ngIf="wishForm.get('name').hasError('required')">Name is required</mat-hint>
         <mat-error *ngIf="wishForm.get('name').hasError('required')"> Please enter a valid name </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <mat-label>Descrption</mat-label>
+        <textarea
+          matInput
+          placeholder=""
+          formControlName="description"
+          minlength="10"
+          maxlength="1000"
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="2"
+          cdkAutosizeMaxRows="10"
+        ></textarea>
+        <mat-hint *ngIf="wishForm.get('description').invalid"
+          >Description of at least 10 charachters is required</mat-hint
+        >
+        <mat-error *ngIf="wishForm.get('description').invalid"> Please enter a descrption </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <mat-label>Image URL</mat-label>
+        <input formControlName="imgUrl" matInput placeholder="" />
+        <mat-hint *ngIf="wishForm.get('imgUrl').hasError('required')">Image url is required</mat-hint>
+        <mat-error *ngIf="wishForm.get('imgUrl').hasError('required')"> Please enter a image URL </mat-error>
       </mat-form-field>
       <button type="submit" [disabled]="wishForm.invalid" mat-raised-button color="primary">Add</button>
     </form>

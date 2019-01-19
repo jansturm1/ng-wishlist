@@ -1,15 +1,27 @@
+import { WishService } from './../../services/wish.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
+  loginForm: FormGroup;
 
-  constructor() { }
+  constructor(private fb: FormBuilder, private wishService: WishService) {}
 
   ngOnInit() {
+    this.loginForm = this.fb.group({
+      email: [null, Validators.required],
+      password: [null, Validators.required],
+      imgUrl: [null, Validators.required],
+    });
   }
 
+  onSubmit({ value, valid }: { value: any; valid: boolean }) {
+    console.log(value);
+    this.loginForm.reset(this.loginForm.value);
+  }
 }

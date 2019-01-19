@@ -15,10 +15,18 @@ export class AddWishComponent implements OnInit {
   ngOnInit() {
     this.wishForm = this.fb.group({
       name: [null, Validators.required],
+      description: [null, Validators.required],
+      imgUrl: [null, Validators.required],
     });
   }
 
   onSubmit({ value, valid }: { value: any; valid: boolean }) {
-    this.wishService.saveWishForUser('123', { name: value.name, created: new Date() });
+    this.wishService.saveWishForUser('123', {
+      name: value.name,
+      created: new Date(),
+      description: value.description,
+      imgUrl: value.imgUrl,
+    });
+    this.wishForm.reset(this.wishForm.value);
   }
 }
