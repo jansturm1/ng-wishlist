@@ -1,6 +1,7 @@
 <section fxLayout="row" fxLayoutAlign="center start" style="margin-top: 2%">
   <mat-card style="width: 50%">
     <form
+      #wForm="ngForm"
       (ngSubmit)="onSubmit(wishForm)"
       [formGroup]="wishForm"
       fxLayout="column"

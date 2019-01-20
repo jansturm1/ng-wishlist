@@ -1,6 +1,8 @@
+import { AuthService } from 'src/app/services/auth.service';
 import { WishService } from './../../../services/wish.service';
 import { Component, OnInit } from '@angular/core';
 import { Wish } from 'src/app/models/wish.model';
+import { switchMap, first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-wish-list',
@@ -8,22 +10,34 @@ import { Wish } from 'src/app/models/wish.model';
   styleUrls: ['./wish-list.component.css'],
 })
 export class WishListComponent implements OnInit {
-  constructor(private wishService: WishService) {}
+  constructor(private wishService: WishService, private authService: AuthService) {}
 
   wishes: Wish[] = [];
 
   ngOnInit() {
-    this.wishService.getWishesForUser('123').subscribe(
-      wishes => {
-        this.wishes = wishes;
-      },
-      e => {
-        console.log(e);
-      }
-    );
+    this.authService
+      .getFirebaseAuthState()
+      .pipe(
+        first(),
+        switchMap(user => this.wishService.getWishesForUser(user.uid))
+      )
+      .subscribe(
+        wishes => {
+          this.wishes = wishes;
+        },
+        e => {
+          console.log(e);
+        }
+      );
   }
 
   deleteWish(id: string) {
-    this.wishService.deleteWishForUser('123', id);
+    this.authService
+      .getFirebaseAuthState()
+      .pipe(
+        first(),
+        switchMap(user => this.wishService.deleteWishForUser(user.uid, id))
+      )
+      .subscribe();
   }
 }

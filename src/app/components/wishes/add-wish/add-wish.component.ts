@@ -1,6 +1,8 @@
+import { AuthService } from 'src/app/services/auth.service';
 import { WishService } from './../../../services/wish.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { first, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-wish',
@@ -8,9 +10,12 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./add-wish.component.css'],
 })
 export class AddWishComponent implements OnInit {
+  // for reseting
+  @ViewChild('wForm') form;
+
   wishForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private wishService: WishService) {}
+  constructor(private fb: FormBuilder, private wishService: WishService, private authService: AuthService) {}
 
   ngOnInit() {
     this.wishForm = this.fb.group({
@@ -21,12 +26,25 @@ export class AddWishComponent implements OnInit {
   }
 
   onSubmit({ value, valid }: { value: any; valid: boolean }) {
-    this.wishService.saveWishForUser('123', {
-      name: value.name,
-      created: new Date(),
-      description: value.description,
-      imgUrl: value.imgUrl,
-    });
-    this.wishForm.reset(this.wishForm.value);
+    this.authService
+      .getFirebaseAuthState()
+      .pipe(
+        first(),
+        switchMap(user =>
+          this.wishService.saveWishForUser(user.uid, {
+            name: value.name,
+            created: new Date(),
+            description: value.description,
+            imgUrl: value.imgUrl,
+          })
+        )
+      )
+      .subscribe(
+        _ => {
+          this.form.resetForm();
+          // TO_DO: add toast/flash message OK
+        },
+        e => console.log(e)
+      );
   }
 }

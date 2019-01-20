@@ -15,7 +15,7 @@ export class WishService {
   getWishesForUser(userId: string): Observable<Wish[]> {
     return <Observable<Wish[]>>this.db
       .collection('/users')
-      .doc('D3023yzR6W62fYXFQi8f')
+      .doc(userId)
       .collection<Wish>('/wishes')
       .snapshotChanges()
       .pipe(
@@ -36,7 +36,7 @@ export class WishService {
   saveWishForUser(userID: string, wish: Wish) {
     return this.db
       .collection('/users')
-      .doc('D3023yzR6W62fYXFQi8f')
+      .doc(userID)
       .collection('/wishes')
       .add(wish);
   }
@@ -44,7 +44,7 @@ export class WishService {
   deleteWishForUser(userID: string, wishId: string) {
     return this.db
       .collection('/users')
-      .doc('D3023yzR6W62fYXFQi8f')
+      .doc(userID)
       .collection<Wish>('/wishes')
       .doc<Wish>(`${wishId}`)
       .delete();
