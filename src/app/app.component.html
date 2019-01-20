@@ -1,16 +1,16 @@
 <mat-sidenav-container class="example-container">
   <mat-sidenav #sidenav role="navigation">
     <mat-list>
-      <a mat-list-item [routerLink]="['wishes']" (click)="sidenav.toggle()">
+      <a *ngIf="isUserLogedIn" mat-list-item [routerLink]="['wishes']" (click)="sidenav.toggle()">
         <mat-icon>face</mat-icon><span class="sidebar-item-text">Wishes</span>
       </a>
-      <a mat-list-item [routerLink]="['login']" (click)="sidenav.toggle()">
+      <a *ngIf="!isUserLogedIn" mat-list-item [routerLink]="['login']" (click)="sidenav.toggle()">
         <mat-icon>list</mat-icon><span class="sidebar-item-text">Login</span>
       </a>
-      <a mat-list-item [routerLink]="['register']" (click)="sidenav.toggle()">
+      <a *ngIf="!isUserLogedIn" mat-list-item [routerLink]="['register']" (click)="sidenav.toggle()">
         <mat-icon>list</mat-icon><span class="sidebar-item-text">Register</span>
       </a>
-      <a mat-list-item [routerLink]="['/']" (click)="sidenav.toggle()">
+      <a *ngIf="isUserLogedIn" mat-list-item [routerLink]="['/login']" (click)="onLogout(); sidenav.toggle()">
         <mat-icon>last_page</mat-icon><span class="sidebar-item-text">Logout</span>
       </a>
     </mat-list>
@@ -21,10 +21,15 @@
         <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
       </div>
       <span><a [routerLink]="['/']">Wishlist</a></span
-      ><span class="toolbar-spacer" style="width:2%"></span> <span><a [routerLink]="['wishes']">List</a></span>
+      ><span class="toolbar-spacer" style="width:2%"></span>
+      <span *ngIf="isUserLogedIn"><a [routerLink]="['wishes']">Wishes</a></span>
       <div fxFlex fxLayoutAlign="flex-end" fxLayoutGap="20px" fxHide.lt-sm>
-        <span><a [routerLink]="['login']">Login</a></span> <span><a [routerLink]="['register']">Register</a></span>
-        <span><a>Logout</a></span> <span class="toolbar-spacer"></span>
+        <span *ngIf="!isUserLogedIn"><a [routerLink]="['login']">Login</a></span>
+        <span *ngIf="!isUserLogedIn"><a [routerLink]="['register']">Register</a></span>
+        <span *ngIf="isUserLogedIn" [routerLink]="['/login']" (click)="onLogout()"
+          ><a>Logout ({{ fireBaseUser.email }})</a></span
+        >
+        <span class="toolbar-spacer"></span>
       </div>
     </mat-toolbar>
     <router-outlet></router-outlet>

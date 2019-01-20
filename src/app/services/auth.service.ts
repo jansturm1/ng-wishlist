@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { User } from '../models/user.model';
 
 @Injectable({
@@ -9,12 +9,9 @@ import { User } from '../models/user.model';
 export class AuthService {
   constructor(private fireAuth: AngularFireAuth) {}
 
-  private isAuthenticated = false;
-  authChange = new Subject<boolean>();
-
   login(user: User) {
     this.fireAuth.auth
-      .signInWithEmailAndPassword(user.email, user.password)
+      .signInAndRetrieveDataWithEmailAndPassword(user.email, user.password)
       .then(_data => {
         console.log(_data);
       })
@@ -32,5 +29,13 @@ export class AuthService {
       .catch(err => {
         console.log(err);
       });
+  }
+
+  getFirebaseAuthState(): Observable<firebase.User> {
+    return this.fireAuth.authState;
+  }
+
+  logoutFromFirebase() {
+    return this.fireAuth.auth.signOut();
   }
 }

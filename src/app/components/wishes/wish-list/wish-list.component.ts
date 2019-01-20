@@ -13,9 +13,14 @@ export class WishListComponent implements OnInit {
   wishes: Wish[] = [];
 
   ngOnInit() {
-    this.wishService.getWishesForUser('123').subscribe(wishes => {
-      this.wishes = wishes;
-    });
+    this.wishService.getWishesForUser('123').subscribe(
+      wishes => {
+        this.wishes = wishes;
+      },
+      e => {
+        console.log(e);
+      }
+    );
   }
 
   deleteWish(id: string) {
