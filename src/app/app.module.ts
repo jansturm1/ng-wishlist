@@ -21,6 +21,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
+import { DeleteWishDialogComponent } from './components/wishes/delete-wish-dialog/delete-wish-dialog.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { environment } from 'src/environments/environment';
     FooterComponent,
     LoginComponent,
     RegisterComponent,
+    DeleteWishDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,5 +52,6 @@ import { environment } from 'src/environments/environment';
   ],
   providers: [],
   bootstrap: [AppComponent],
+  entryComponents: [DeleteWishDialogComponent],
 })
 export class AppModule {}

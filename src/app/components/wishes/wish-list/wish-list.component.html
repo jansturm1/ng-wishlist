@@ -4,7 +4,7 @@
       <div mat-card-avatar></div>
       <mat-card-title>{{ wish.name }}</mat-card-title>
       <mat-card-subtitle>Added on {{ wish.created.seconds * 1000 | date: 'MM-dd-yyyy' }} </mat-card-subtitle>
-      <mat-icon (click)="deleteWish(wish.id)">delete_outline</mat-icon>
+      <mat-icon style="cursor:pointer" (click)="deleteWish(wish)">delete_outline</mat-icon>
     </mat-card-header>
     <img mat-card-image src="{{ wish.imgUrl }}" alt="Photo of a {{ wish.name }}}" />
     <mat-card-content>

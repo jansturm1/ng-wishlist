@@ -1,6 +1,6 @@
 # Ng-Wishlist
 
-Simple Angular (7) & Angular Material wish-list application , uses Google's Firestore for database, authentication & hosting.
+Simple Angular (7) & Angular Material wish-list application, uses Google's Firestore for database, authentication & hosting.
 
 ## Development server
 

@@ -2,7 +2,7 @@
   <mat-sidenav #sidenav role="navigation">
     <mat-list>
       <a *ngIf="isUserLogedIn" mat-list-item [routerLink]="['wishes']" (click)="sidenav.toggle()">
-        <mat-icon>face</mat-icon><span class="sidebar-item-text">Wishes</span>
+        <mat-icon>face</mat-icon><span class="sidebar-item-text">My list</span>
       </a>
       <a *ngIf="!isUserLogedIn" mat-list-item [routerLink]="['login']" (click)="sidenav.toggle()">
         <mat-icon>list</mat-icon><span class="sidebar-item-text">Login</span>
@@ -20,10 +20,13 @@
       <div fxHide.gt-xs>
         <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
       </div>
-      <span><a [routerLink]="['/']">Wishlist</a></span
-      ><span class="toolbar-spacer" style="width:2%"></span>
-      <span *ngIf="isUserLogedIn"><a [routerLink]="['wishes']">Wishes</a></span>
+      <span class="toolbar-spacer" style="width:4%"></span>
+      <span><a [routerLink]="['/']">Wish<mat-icon>card_giftcard</mat-icon>list</a></span>
+      <!-- <span *ngIf="isUserLogedIn"
+        ><a [routerLink]="['wishes']">My list<mat-icon>list</mat-icon></a></span
+      > -->
       <div fxFlex fxLayoutAlign="flex-end" fxLayoutGap="20px" fxHide.lt-sm>
+        <span *ngIf="isUserLogedIn"><a [routerLink]="['wishes']">My list</a></span>
         <span *ngIf="!isUserLogedIn"><a [routerLink]="['login']">Login</a></span>
         <span *ngIf="!isUserLogedIn"><a [routerLink]="['register']">Register</a></span>
         <span *ngIf="isUserLogedIn" [routerLink]="['/login']" (click)="onLogout()"

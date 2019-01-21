@@ -1,8 +1,10 @@
+import { DeleteWishDialogComponent } from './../delete-wish-dialog/delete-wish-dialog.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { WishService } from './../../../services/wish.service';
 import { Component, OnInit } from '@angular/core';
 import { Wish } from 'src/app/models/wish.model';
 import { switchMap, first } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-wish-list',
@@ -10,7 +12,7 @@ import { switchMap, first } from 'rxjs/operators';
   styleUrls: ['./wish-list.component.css'],
 })
 export class WishListComponent implements OnInit {
-  constructor(private wishService: WishService, private authService: AuthService) {}
+  constructor(public dialog: MatDialog, private wishService: WishService, private authService: AuthService) {}
 
   wishes: Wish[] = [];
 
@@ -31,13 +33,28 @@ export class WishListComponent implements OnInit {
       );
   }
 
-  deleteWish(id: string) {
-    this.authService
-      .getFirebaseAuthState()
-      .pipe(
-        first(),
-        switchMap(user => this.wishService.deleteWishForUser(user.uid, id))
-      )
-      .subscribe();
+  deleteWish(wish: Wish) {
+    const dialogRef = this.dialog.open(DeleteWishDialogComponent, {
+      width: '250px',
+      data: wish,
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      console.log('The dialog was closed');
+      if (result) {
+        this.authService
+          .getFirebaseAuthState()
+          .pipe(
+            first(),
+            switchMap(user => this.wishService.deleteWishForUser(user.uid, wish.id))
+          )
+          .subscribe(
+            _ => {},
+            e => {
+              console.log(e);
+            }
+          );
+      }
+    });
   }
 }
