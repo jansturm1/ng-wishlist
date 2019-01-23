@@ -1,15 +1,23 @@
-<section fxLayout="row wrap" fxLayout.xs="column wrap" fxLayoutGap="1%" fxLayoutAlign.xs="center center">
-  <mat-card class="wish-card" *ngFor="let wish of wishes">
-    <mat-card-header>
-      <div mat-card-avatar></div>
-      <mat-card-title>{{ wish.name }}</mat-card-title>
-      <mat-card-subtitle>Added on {{ wish.created.seconds * 1000 | date: 'MM-dd-yyyy' }} </mat-card-subtitle>
-      <mat-icon style="cursor:pointer" (click)="deleteWish(wish)">delete_outline</mat-icon>
-    </mat-card-header>
-    <img mat-card-image src="{{ wish.imgUrl }}" alt="Photo of a {{ wish.name }}}" />
-    <mat-card-content>
-      <p>{{ wish.description }}</p>
-    </mat-card-content>
-    <mat-card-actions> <button mat-button>LIKE</button> <button mat-button>SHARE</button> </mat-card-actions>
-  </mat-card>
+<section
+  fxLayout="row wrap"
+  fxLayout.xs="column"
+  fxLayoutAlign.xs="center center"
+  fxLayoutAlign="flex-start flex-start"
+>
+  <div fxFlexAlign="center"><mat-spinner style="text-align: center" *ngIf="isLoading"></mat-spinner></div>
+  <ng-container *ngIf="!isLoading">
+    <mat-card fxFlex.xs="100%" class="wish-card" *ngFor="let wish of wishes">
+      <mat-card-header>
+        <div mat-card-avatar></div>
+        <mat-card-title>{{ wish.name }}</mat-card-title>
+        <mat-card-subtitle>Added on {{ wish.created.seconds * 1000 | date: 'MM-dd-yyyy' }} </mat-card-subtitle>
+        <mat-icon style="cursor:pointer" (click)="deleteWish(wish)">delete_outline</mat-icon>
+      </mat-card-header>
+      <img mat-card-image src="{{ wish.imgUrl }}" alt="Photo of a {{ wish.name }}}" />
+      <mat-card-content>
+        <p>{{ wish.description }}</p>
+      </mat-card-content>
+      <mat-card-actions> <button mat-button>LIKE</button> <button mat-button>SHARE</button> </mat-card-actions>
+    </mat-card>
+  </ng-container>
 </section>

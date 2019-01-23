@@ -33,10 +33,6 @@ export class AddWishComponent implements OnInit, OnDestroy {
       description: [null, Validators.required],
       imgUrl: [null, Validators.required],
     });
-
-    this.uiService.isLoading
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(isLoading => (this.isLoading = isLoading), _e => {});
   }
 
   ngOnDestroy(): void {
@@ -50,7 +46,7 @@ export class AddWishComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.onDestroy$),
         first(),
-        tap(_ => this.uiService.isLoading.next(true)),
+        tap(_ => (this.isLoading = true)),
         switchMap(user =>
           this.wishService.saveWishForUser(user.uid, {
             name: value.name,
@@ -64,12 +60,12 @@ export class AddWishComponent implements OnInit, OnDestroy {
         _ => {
           this.form.resetForm();
           // TO_DO: add toast/flash message OK
-          this.uiService.isLoading.next(false);
+          this.isLoading = false;
           this.uiService.showSnackbar('Wish added!', null);
         },
         e => {
           console.log(e);
-          this.uiService.isLoading.next(false);
+          this.isLoading = false;
         }
       );
   }
