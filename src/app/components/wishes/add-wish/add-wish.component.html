@@ -39,7 +39,10 @@
         <mat-hint *ngIf="wishForm.get('imgUrl').hasError('required')">Image url is required</mat-hint>
         <mat-error *ngIf="wishForm.get('imgUrl').hasError('required')"> Please enter a image URL </mat-error>
       </mat-form-field>
-      <button type="submit" [disabled]="wishForm.invalid" mat-raised-button color="primary">Add</button>
+      <mat-spinner *ngIf="isLoading"></mat-spinner>
+      <button *ngIf="!isLoading" type="submit" [disabled]="wishForm.invalid" mat-raised-button color="primary">
+        Add
+      </button>
     </form>
   </mat-card>
 </section>
