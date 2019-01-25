@@ -5,7 +5,7 @@ import { WishService } from './../../../services/wish.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Wish } from 'src/app/models/wish.model';
 import { switchMap, first, takeUntil, tap } from 'rxjs/operators';
-import { MatDialog } from '@angular/material';
+import { MatDialog, PageEvent } from '@angular/material';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -17,6 +17,14 @@ export class WishListComponent implements OnInit, OnDestroy {
   onDestroy$ = new Subject<void>();
   isLoading = false;
 
+  // MatPaginator Inputs
+  pageSize = 3;
+  pageSizeOptions: number[] = [3, 5, 10];
+  pageIndex = 0;
+
+  // MatPaginator Output
+  pageEvent: PageEvent;
+
   constructor(
     public dialog: MatDialog,
     private wishService: WishService,
@@ -25,26 +33,10 @@ export class WishListComponent implements OnInit, OnDestroy {
   ) {}
 
   wishes: Wish[] = [];
+  wishesPage: Wish[] = [];
 
   ngOnInit() {
-    this.authService
-      .getFirebaseAuthState()
-      .pipe(
-        tap(_ => (this.isLoading = true)),
-        takeUntil(this.onDestroy$),
-        first(),
-        switchMap(user => this.wishService.getWishesForUser(user.uid))
-      )
-      .subscribe(
-        wishes => {
-          this.wishes = wishes;
-          this.isLoading = false;
-        },
-        e => {
-          this.isLoading = false;
-          console.log(e);
-        }
-      );
+    this.loadWishes();
   }
 
   ngOnDestroy(): void {
@@ -75,5 +67,40 @@ export class WishListComponent implements OnInit, OnDestroy {
           );
       }
     });
+  }
+
+  setPageSizeOptions(setPageSizeOptionsInput: string) {
+    this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+  }
+
+  private loadWishes() {
+    this.authService
+      .getFirebaseAuthState()
+      .pipe(
+        tap(_ => (this.isLoading = true)),
+        takeUntil(this.onDestroy$),
+        first(),
+        switchMap(user => this.wishService.getWishesForUser(user.uid))
+      )
+      .subscribe(
+        wishes => {
+          this.wishes = wishes;
+          this.isLoading = false;
+          this.wishesPage = this.wishes.slice(
+            0,
+            this.pageSize < this.wishes.length ? this.pageSize : this.wishes.length
+          );
+        },
+        er => {
+          this.isLoading = false;
+          console.log(er);
+        }
+      );
+  }
+
+  private loadWishesPaging(e?) {
+    const offset = e.pageIndex * e.pageSize;
+    const end = offset + e.pageSize;
+    this.wishesPage = this.wishes.slice(offset, end > this.wishes.length ? this.wishes.length : end);
   }
 }

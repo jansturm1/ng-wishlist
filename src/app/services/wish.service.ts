@@ -8,8 +8,6 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class WishService {
-  wishes: Observable<Wish>;
-
   constructor(private db: AngularFirestore) {}
 
   getWishesForUser(userId: string): Observable<Wish[]> {

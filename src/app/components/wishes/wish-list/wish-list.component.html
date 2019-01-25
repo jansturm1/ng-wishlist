@@ -1,3 +1,11 @@
+<mat-paginator
+  *ngIf="!isLoading"
+  [length]="wishes.length"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="pageEvent = loadWishesPaging($event)"
+>
+</mat-paginator>
 <section
   fxLayout="row wrap"
   fxLayout.xs="column"
@@ -6,7 +14,7 @@
 >
   <div fxFlexAlign="center"><mat-spinner style="text-align: center" *ngIf="isLoading"></mat-spinner></div>
   <ng-container *ngIf="!isLoading">
-    <mat-card fxFlex.xs="100%" class="wish-card" *ngFor="let wish of wishes">
+    <mat-card fxFlex.xs="100%" class="wish-card" *ngFor="let wish of wishesPage">
       <mat-card-header>
         <div mat-card-avatar></div>
         <mat-card-title>{{ wish.name }}</mat-card-title>
